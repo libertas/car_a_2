@@ -32,3 +32,4 @@ void delay_ms(uint16_t ms);
 void tim3_pwm_set(u16 freq,u16 duty);
 void exti_color_disable();
 void exti_color_enable();
+void can_rcv_cb(CanRxMsg *can_rx_msg);

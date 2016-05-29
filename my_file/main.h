@@ -10,6 +10,13 @@
 #define STEP_LENGTH 4
 #define WHITE_AREA_SIZE_MIN 500
 
+#define CAN_ID_LCDSHOW 0x15
+#define CAN_ID_CCDANDCAMERA 0x10
+#define CAN_ID_STOP 0x9    //停止的命令的优先级很高
+#define CAN_ID_BINIT 0x8
+#define CAN_ID_RESET 0x7
+
 extern float g_pre_centroid_x[10];
 extern u8 g_death_turn_flag;//打死标志
+extern u8 g_key1_flag;
 void servo_lock(u8 lock);

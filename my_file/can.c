@@ -10,19 +10,18 @@
 
 static void (*msg_rcv_callback)(CanRxMsg *can_rx_msg);
 static CanRxMsg g_can_rx_msg;
-
+can_callback_struct can_cb_array[256]; 
 
 /* 函数名：void can_init(void *)
  * 功能：can总线初始化
- * 参数：void *msg_rcv_callback_fuc 邮件接收回调函数的指针，每当接收到所需要的
- *      消息时会自动调用该函数。注意：这里是在接收中断里调用这个函数的，所以该
- *      函数不宜执行太久。如果该函数指针为NULL，则不使用邮件接收中断。
+ * 参数：
  * 返回值：初始化成功则返回1
  */
-int can_init(void *msg_rcv_callback_func){
+int can_init(){
+    int i;
     CAN_InitTypeDef can_init_struct;
 
-    msg_rcv_callback = msg_rcv_callback_func;
+    //msg_rcv_callback = msg_rcv_callback_func;
     can_rcc_config();
     can_gpio_config();
     CAN_DeInit(CANX); 
@@ -64,9 +63,28 @@ int can_init(void *msg_rcv_callback_func){
     CAN1->FMR &= ~1; //过滤器组正常工作
     CAN_ITConfig(CANX,CAN_IT_FMP0,ENABLE);  //FIFO0消息挂号中断允许
 
-    if(msg_rcv_callback != NULL){  //接收信息的回调函数指针非空，则开启中断
-        can_nvic_config();
+    for(i = 0;i < 256;i++){
+        can_cb_array[i].can_id = i;
+        can_cb_array[i].msg_rcv_callback = 0;
     }
+    can_nvic_config();
+    return 1;
+}
+
+/* 函数名：int can_add_callback(u8 can_id,void *msg_rcv_callback_func)
+ * 功能：增加对应标识符的CALLBACK函数
+ * 参数：u8 can_id,接收消息的CALLBACK函数对应的标识符
+         void *msg_rcv_callback_fuc 邮件接收回调函数的指针，每当接收到所需要的
+ *       消息时会自动调用该函数。注意：这里是在接收中断里调用这个函数的，所以该
+ *       函数不宜执行太久。如果该函数指针为NULL，则不使用邮件接收中断。
+ * 返回值：-1,已经存在函数
+ *          1,成功增加函数
+ */
+int can_add_callback(u8 can_id,void *msg_rcv_callback_func){
+    if(can_cb_array[can_id].msg_rcv_callback != 0){
+        return -1;
+    }
+    can_cb_array[can_id].msg_rcv_callback = msg_rcv_callback_func;
     return 1;
 }
 
@@ -134,17 +152,18 @@ void can_nvic_config(){
 
 /* 函数名：int can_send_msg()
  * 功能：can发送一组数据
- * 参数：u8* msg 数据数组
+ * 参数：u8  can_id 数据包的标识符
+ *       u8* msg 数据数组
  *       u8  len 数据数组长度，最大为8
  * 返回值：-1,表示发送失败
  *         1 ,表示发送成功
  */
-int can_send_msg(u8 *msg,u8 len){
+int can_send_msg(u8 can_id,u8 *msg,u8 len){
     CanTxMsg tx_msg;
     u8 mbox;
     u16 i = 0;
 
-    tx_msg.StdId = CAN_ID;
+    tx_msg.StdId = can_id;
     tx_msg.IDE = CAN_Id_Standard;   //使用标准标识符
     tx_msg.RTR = CAN_RTR_Data;   //消息类型为数据帧
     tx_msg.DLC = len;   //消息长度
@@ -153,7 +172,7 @@ int can_send_msg(u8 *msg,u8 len){
     }
     mbox = CAN_Transmit(CANX,&tx_msg);  //开始发送消息
     i = 0;
-    while((CAN_TransmitStatus(CAN1,mbox) == CAN_TxStatus_Failed) && (i < 0xfff))i++;
+    while((CAN_TransmitStatus(CANX,mbox) == CAN_TxStatus_Failed) && (i < 0xfff))i++;
     if(i >= 0xfff) return -1;
     return 1;
 }
@@ -166,7 +185,9 @@ void CAN2_RX0_IRQHandler(void){
 #endif
     if(CAN_GetITStatus(CANX,CAN_IT_FMP0) != RESET){
         CAN_Receive(CANX,CAN_FIFO0,&g_can_rx_msg);
-        msg_rcv_callback(&g_can_rx_msg);
+        if(can_cb_array[g_can_rx_msg.StdId].msg_rcv_callback != 0){
+            (can_cb_array[g_can_rx_msg.StdId].msg_rcv_callback)(&g_can_rx_msg);
+        }
         CAN_ClearITPendingBit(CANX,CAN_IT_FMP0);
     }
 }

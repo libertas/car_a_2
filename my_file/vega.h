@@ -16,15 +16,10 @@
 
 
 #define VEGA_CAN_ID 0x11   //vega数据包的标识符
+#define CMD_CAN_ID 0X12
 
 
-typedef union{
-    u8 u8_form[4];
-    int s32_form;
-    float float_form;
-}data_convert;
 
-void vega_msg_rcv_callback(CanRxMsg *can_rx_msg);
 int vega_init(int *p_pos_x,int *p_pos_y,float *angle);
-int vega_reset();
 int vega_set_angle(float angle);
+int vega_reset();

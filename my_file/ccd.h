@@ -14,8 +14,8 @@
 
 
 //配置CCD行采集中断的优先级
-#define CCD_NVIC_IRQPP 1              //中断抢断优先级
-#define CCD_NVIC_IRQSP 1              //中断子优先级
+#define CCD_NVIC_IRQPP 0              //中断抢断优先级
+#define CCD_NVIC_IRQSP 0              //中断子优先级
 
 #define CCD_DMA DMA2_Stream0           //CCD数据采集所用的DMA
 #define CCD_DEFAUT_LINE_SIZE 128        //CCD行数据数

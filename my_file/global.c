@@ -1,4 +1,7 @@
 #include "global.h"
+#include "can.h"
+#include "stm32f4xx_can.h"
+#include "vega.h"
 
 
 int fputc(int ch, FILE *f)
@@ -141,22 +144,25 @@ void tim3_pwm_set(u16 freq,u16 duty){
 }
 
 void exti_color_disable(){
-		NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
 	
-		NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); 
-    NVIC_InitStructure.NVIC_IRQChannel=EXTI1_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;//1
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority =2;//0
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); 
+    NVIC_InitStructure.NVIC_IRQChannel=EXTI0_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//1
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;//0
     NVIC_InitStructure.NVIC_IRQChannelCmd = DISABLE;
     NVIC_Init(&NVIC_InitStructure);
 		
 }
 void exti_color_enable(){
-		NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
 	
-		NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); 
-    NVIC_InitStructure.NVIC_IRQChannel=EXTI1_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;//1
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority =2;//0
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); 
+    NVIC_InitStructure.NVIC_IRQChannel=EXTI0_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//1
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;//0
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);}
+    NVIC_Init(&NVIC_InitStructure);
+}
+
+

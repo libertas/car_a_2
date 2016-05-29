@@ -228,6 +228,15 @@ void EXTI9_5_IRQHandler(void){
 //		}
 }  
 
+void EXTI15_10_IRQHandler(void){
+    if(EXTI_GetITStatus(EXTI_Line10) != RESET){
+        delay_ms(30);
+        if(GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_10) == 0){
+            g_key1_flag = 1;
+        }
+        EXTI_ClearITPendingBit(EXTI_Line10);
+    }
+}
 
 void TIM2_IRQHandler(void){
 	  if( TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET ) 

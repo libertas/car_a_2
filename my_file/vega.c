@@ -7,6 +7,7 @@
 static int *g_vega_pos_x,*g_vega_pos_y;
 static float *g_vega_angle;
 
+void vega_msg_rcv_callback(CanRxMsg *can_rx_msg);
 /* 函数名：int vega_init()
  * 功能：初始化vega
  * 参数：int *p_pos_x,存储x坐标的变量的指针
@@ -22,7 +23,8 @@ int vega_init(int *p_pos_x,int *p_pos_y,float *p_angle){
     g_vega_angle = p_angle;
 
 
-    can_init(vega_msg_rcv_callback);
+    can_add_callback(VEGA_CAN_ID,vega_msg_rcv_callback);
+    
 
     return 1;
 }
@@ -34,7 +36,7 @@ int vega_init(int *p_pos_x,int *p_pos_y,float *p_angle){
  */
 void vega_msg_rcv_callback(CanRxMsg *can_rx_msg){
     data_convert temp;
-    if(can_rx_msg->StdId == VEGA_CAN_ID){   //如果是VEGA的包
+    //if(can_rx_msg->StdId == VEGA_CAN_ID){   //如果是VEGA的包
         if(can_rx_msg->DLC == 8){
             temp.u8_form[0] = can_rx_msg->Data[0];
             temp.u8_form[1] = can_rx_msg->Data[1];
@@ -53,7 +55,7 @@ void vega_msg_rcv_callback(CanRxMsg *can_rx_msg){
             temp.u8_form[3] = can_rx_msg->Data[3];
             memcpy((void*)g_vega_angle,&temp.float_form,4);
         }
-    } 
+    //} 
 }
 
 
@@ -66,7 +68,7 @@ void vega_msg_rcv_callback(CanRxMsg *can_rx_msg){
 int vega_set_angle(float angle){
     data_convert temp;
     temp.float_form = angle;
-    return can_send_msg(temp.u8_form,4);
+    return can_send_msg(CMD_CAN_ID,temp.u8_form,4);
 }
 
 
@@ -88,10 +90,10 @@ int vega_set_pos(int pos_x,int pos_y){
     send_data[5] = (u8)(pos_y >> 1 * 8);
     send_data[6] = (u8)(pos_y >> 2 * 8);
     send_data[7] = (u8)(pos_y >> 3 * 8);
-    return can_send_msg(send_data,8);
+    return can_send_msg(CMD_CAN_ID,send_data,8);
 }
 
-/* 函数名：void vega_reset()
+/* 函数名：int vega_reset()
  * 功能：软件复位vega
  * 参数：无
  * 返回值：1,复位成功
@@ -101,5 +103,5 @@ int vega_reset(){
     u8 send_data[2];
     send_data[0] = 0x55;
     send_data[1] = 0xff;
-    return can_send_msg(send_data,2);
+    return can_send_msg(CMD_CAN_ID,send_data,2);
 }

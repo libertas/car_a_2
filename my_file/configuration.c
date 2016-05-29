@@ -253,6 +253,8 @@ void gpio_config(void)
 		SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOF,EXTI_PinSource1);
         GPIO_Configuration(GPIO_Pin_13|GPIO_Pin_15,GPIO_Mode_OUT, GPIO_Speed_50MHz,GPIO_OType_PP,GPIO_PuPd_NOPULL,GPIOG);
         GPIO_Configuration(GPIO_Pin_6,GPIO_Mode_OUT, GPIO_Speed_50MHz,GPIO_OType_PP,GPIO_PuPd_NOPULL,GPIOD); 
+        GPIO_Configuration(GPIO_Pin_10,GPIO_Mode_IN, GPIO_Speed_50MHz,GPIO_OType_PP,GPIO_PuPd_NOPULL,GPIOC); 
+		SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC,EXTI_PinSource10);
 
 /********************************************************************************/
 	
@@ -278,6 +280,12 @@ void exti_config(){
     exti_init_structure.EXTI_Line = EXTI_Line9;
     exti_init_structure.EXTI_Mode = EXTI_Mode_Interrupt;
     exti_init_structure.EXTI_Trigger = EXTI_Trigger_Rising;
+    exti_init_structure.EXTI_LineCmd = ENABLE;
+    EXTI_Init(&exti_init_structure); 
+
+    exti_init_structure.EXTI_Line = EXTI_Line10;
+    exti_init_structure.EXTI_Mode = EXTI_Mode_Interrupt;
+    exti_init_structure.EXTI_Trigger = EXTI_Trigger_Falling;
     exti_init_structure.EXTI_LineCmd = ENABLE;
     EXTI_Init(&exti_init_structure); 
     
@@ -510,6 +518,13 @@ void NVIC_Configuration()
 		//摄像头场中断
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); 
     NVIC_InitStructure.NVIC_IRQChannel=EXTI3_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//1
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;//0
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+    //按键中断
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); 
+    NVIC_InitStructure.NVIC_IRQChannel=EXTI15_10_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//1
     NVIC_InitStructure.NVIC_IRQChannelSubPriority =0;//0
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;

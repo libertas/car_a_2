@@ -25,6 +25,12 @@
  *          个中断函数里面调用的，也即函数msg_rcv_func()的执行过程就是中断处理过
  *          成，在中断里停留太久，很容易使得工程出现一些意想不到的问题。中断的优
  *          先级可以通过宏CAN_NVIC_IRQPP、CAN_NVIC_IRQSP来配置。
+ * 16年5月22号更新:can_send_msg()函数增加了标识符参数
+ * 16年5月25号更新:修改了can_init函数，该函数没有参数了。新增了can_add_callback()
+ *          函数，该函数可以增加对应标识符的callback函数。如执行函数
+ *          can_add_callback(0x11,msg_rcv_func)函数之后，每当接收到标识符是0x11的
+ *          CAN数据包时，都会自动调用函数msg_rcv_func(CanRxMsg can_rx_msg)
+ *          
  *          
  */
 #include "stm32f4xx.h"
@@ -50,10 +56,10 @@
 #define CAN_FILTER_ID 0x00000000   //如果都为0，则接收任意标识符的数据包
 #define CAN_FILTER_MASK 0x00000000
 //中断优先级设置
-#define CAN1_NVIC_IRQPP 2              //CAN1中断抢断优先级
-#define CAN1_NVIC_IRQSP 2              //CAN1中断子优先级
-#define CAN2_NVIC_IRQPP 2              //CAN2中断抢断优先级
-#define CAN2_NVIC_IRQSP 2              //CAN2中断子优先级
+#define CAN1_NVIC_IRQPP 1              //CAN1中断抢断优先级
+#define CAN1_NVIC_IRQSP 1              //CAN1中断子优先级
+#define CAN2_NVIC_IRQPP 1              //CAN2中断抢断优先级
+#define CAN2_NVIC_IRQSP 1              //CAN2中断子优先级
 
 #if CAN_SELECT == 1
     #define CANX CAN1
@@ -63,9 +69,22 @@
     #define CAN_ID CAN2_ID
 #endif
 
-int can_init(void *msg_rcv_callback_func);
+
+typedef struct{
+    u8 can_id;
+    void (*msg_rcv_callback)(CanRxMsg *can_rx_msg);
+}can_callback_struct;
+
+typedef union{
+    u8 u8_form[4];
+    int s32_form;
+    float float_form;
+}data_convert;
+
+int can_init();
 void can_rcc_config();
 void can_gpio_config();
 void can_nvic_config();
-int can_send_msg(u8 *msg,u8 len);  //发送邮箱
+int can_send_msg(u8 can_id,u8 *msg,u8 len);  //发送邮箱
 int can_rcv_msg();   //接收信息
+int can_add_callback(u8 can_id,void *msg_rcv_callback_func);
