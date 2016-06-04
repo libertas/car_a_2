@@ -1,5 +1,5 @@
 Dependencies for Project 'main', Target 'Target 1': (DO NOT MODIFY !)
-F (..\my_file\main.c)(0x574A9CBE)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\my_file -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\keil -I..\Utilities\STM32_EVAL\Common -I..\Utilities\STM32_EVAL\STM3240_41_G_EVAL --C99-I f:\Keil\ARM\RV31\INC-I f:\Keil\ARM\CMSIS\Include-I f:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx -DUSE_STM324xG_EVAL -DSTM32F40_41xxx-o .\obj\main.o --omf_browse .\obj\main.crf --depend .\obj\main.d)
+F (..\my_file\main.c)(0x574B00D9)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\my_file -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\keil -I..\Utilities\STM32_EVAL\Common -I..\Utilities\STM32_EVAL\STM3240_41_G_EVAL --C99-I f:\Keil\ARM\RV31\INC-I f:\Keil\ARM\CMSIS\Include-I f:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx -DUSE_STM324xG_EVAL -DSTM32F40_41xxx-o .\obj\main.o --omf_browse .\obj\main.crf --depend .\obj\main.d)
 I (..\my_file\stm32f4xx_it.h)(0x5661203A)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x53DBA488)
 I (f:\Keil\ARM\CMSIS\Include\core_cm4.h)(0x532BF7C2)
@@ -35,7 +35,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_can.h)(0x53DBAFAD)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dac.h)(0x53DBAFAD)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dcmi.h)(0x53DBAFAD)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fsmc.h)(0x53DBAFAD)
-I (..\my_file\main.h)(0x5745E3C7)
+I (..\my_file\main.h)(0x574AFDF5)
 I (..\my_file\configuration.h)(0x571DC684)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x53DBAFAD)
 I (..\my_file\camera.h)(0x5711A4D1)
@@ -89,7 +89,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_can.h)(0x53DBAFAD)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dac.h)(0x53DBAFAD)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dcmi.h)(0x53DBAFAD)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fsmc.h)(0x53DBAFAD)
-I (..\my_file\main.h)(0x5745E3C7)
+I (..\my_file\main.h)(0x574AFDF5)
 I (..\my_file\global.h)(0x5745D849)
 I (..\my_file\configuration.h)(0x571DC684)
 I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x53DBAFAD)
@@ -354,7 +354,7 @@ I (..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h)(0x53DBAFAD)
 I (f:\Keil\ARM\ARMCC\include\stdarg.h)(0x51C7C554)
 I (f:\Keil\ARM\ARMCC\include\stdio.h)(0x51C7C554)
 I (f:\Keil\ARM\ARMCC\include\stdlib.h)(0x51C7C554)
-I (..\my_file\main.h)(0x5745E3C7)
+I (..\my_file\main.h)(0x574AFDF5)
 F (..\my_file\parameter.c)(0x57309C35)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\my_file -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\keil -I..\Utilities\STM32_EVAL\Common -I..\Utilities\STM32_EVAL\STM3240_41_G_EVAL --C99-I f:\Keil\ARM\RV31\INC-I f:\Keil\ARM\CMSIS\Include-I f:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx -DUSE_STM324xG_EVAL -DSTM32F40_41xxx-o .\obj\parameter.o --omf_browse .\obj\parameter.crf --depend .\obj\parameter.d)
 I (..\my_file\parameter.h)(0x572DDA19)
 I (..\my_file\link_list.h)(0x570D1D72)
@@ -489,7 +489,7 @@ I (f:\Keil\ARM\ARMCC\include\string.h)(0x51C7C554)
 I (..\my_file\tftlcd.h)(0x56D11C8C)
 I (..\my_file\mpu6050.h)(0x5711A593)
 I (..\my_file\camera.h)(0x5711A4D1)
-I (..\my_file\main.h)(0x5745E3C7)
+I (..\my_file\main.h)(0x574AFDF5)
 F (..\my_file\mpu6050.c)(0x570D1D72)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork -I..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I..\my_file -I..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I..\keil -I..\Utilities\STM32_EVAL\Common -I..\Utilities\STM32_EVAL\STM3240_41_G_EVAL --C99-I f:\Keil\ARM\RV31\INC-I f:\Keil\ARM\CMSIS\Include-I f:\Keil\ARM\Inc\ST\STM32F4xx-DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx -DUSE_STM324xG_EVAL -DSTM32F40_41xxx-o .\obj\mpu6050.o --omf_browse .\obj\mpu6050.crf --depend .\obj\mpu6050.d)
 I (..\my_file\mpu6050.h)(0x5711A593)
 I (..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x53DBA488)
@@ -686,7 +686,7 @@ F (..\my_file\link_list.h)(0x570D1D72)()
 F (..\my_file\parameter.h)(0x572DDA19)()
 F (..\my_file\camera.h)(0x5711A4D1)()
 F (..\my_file\camera_cfg.h)(0x572DDA19)()
-F (..\my_file\main.h)(0x5745E3C7)()
+F (..\my_file\main.h)(0x574AFDF5)()
 F (..\my_file\cmd_func.h)(0x5711A593)()
 F (..\my_file\cmd.h)(0x5721A8DB)()
 F (..\my_file\mpu6050.h)(0x5711A593)()

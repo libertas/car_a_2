@@ -27,7 +27,6 @@ void can_rcv_cb(CanRxMsg *can_rx_msg){
         ((u8 *)&g_abase_gpiof)[0] = can_rx_msg->Data[0];
         ((u8 *)&g_abase_gpiof)[1] = can_rx_msg->Data[1];
     }
-
 }
 
 int main(){
@@ -57,6 +56,7 @@ int main(){
     data_convert data_temp;
     u8 can_send_array[8];
     u16 can_rcv_temp;
+    u8 check_sum;
 /*********这是数据定义区的分割线**********************/	
 
 /*************以下是各种初始化********************/
@@ -98,7 +98,6 @@ int main(){
         pos_y = vega_pos_y*0.0001;
         sprintf(str_temp,"x:%.3f,y:%.3fangle:%.3f",pos_x,pos_y,vega_angle);   //显示旋转角度
         lcd_show_string(5,100,240,100,16,str_temp);
-
 /**********************以下是测试各种代码的*********************/ 
 
 
@@ -158,7 +157,7 @@ int main(){
                 downstep_array[j%STEP_LENGTH] = ccd.data[j - 1] - ccd.data[j];
                 downstep_integral += downstep_array[j%STEP_LENGTH];
                 step_integral += upstep_array[j%STEP_LENGTH];
-                if(step_integral > param->servo_p_base){   //暂时用servo_p_base表示跳变积分值
+                if(step_integral > 400){   //暂时用servo_p_base表示跳变积分值
                     up_flag = 1;
                     line_width_cnt = WHITE_LINE_WIDTH;
                    // centroid_x = j;
@@ -169,7 +168,7 @@ int main(){
                         up_flag = 0;
                     }
                 }
-                if((downstep_integral > param->servo_p_base) && (up_flag == 1)){//暂时用servo_p_base表示跳变积分值
+                if((downstep_integral > 400) && (up_flag == 1)){//暂时用servo_p_base表示跳变积分值
                     up_flag = 0;
                     ccd_lose_flag = 0;
                     ccd_centroid_x = j - STEP_LENGTH;
@@ -185,18 +184,25 @@ int main(){
             }
         }
         centroid_x = ccd_centroid_x;
-        data_temp.float_form = ccd_centroid_x;
+        data_temp.float_form = ccd_centroid_x; //0x80
+        can_send_array[0] = 0x80;
+        check_sum = 0x80;
+        for(i = 0;i < 4;i++){
+            can_send_array[i + 1] = data_temp.u8_form[i];
+            check_sum += can_send_array[i + 1];
+        }
+        can_send_msg(CAN_ID_CCDANDCAMERA,can_send_array,5);
+        data_temp.float_form = 60.0f;
         for(i = 0;i < 4;i++){
             can_send_array[i] = data_temp.u8_form[i];
+            check_sum += can_send_array[i];
         }
-        for(i = 0;i < 4;i++){
-            can_send_array[i + 4] = 0;
-        }
-        can_send_msg(CAN_ID_CCDANDCAMERA,can_send_array,8);
+        can_send_array[4] = check_sum;
+        can_send_msg(CAN_ID_CCDANDCAMERA,can_send_array,5);
 
         sprintf(str_temp,"x:%3.2f",centroid_x);
         lcd_show_string(5,40,240,100,16,str_temp);
-		sprintf(str_temp,"gpiof:0x%x",GPIOC->IDR);
+        sprintf(str_temp,"gpiof:0x%x",GPIOC->IDR);
         lcd_show_string(5,60,200,100,16,str_temp);
         sprintf(str_temp,"a_gpiof:0x%x  ",g_abase_gpiof);
         lcd_show_string(5,160,240,100,16,str_temp);

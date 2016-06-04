@@ -77,7 +77,7 @@ typedef struct{
 
 typedef union{
     u8 u8_form[4];
-    int s32_form;
+    uint32_t s32_form;
     float float_form;
 }data_convert;
 

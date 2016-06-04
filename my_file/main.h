@@ -11,7 +11,7 @@
 #define WHITE_AREA_SIZE_MIN 500
 
 #define CAN_ID_LCDSHOW 0x15
-#define CAN_ID_CCDANDCAMERA 0x10
+#define CAN_ID_CCDANDCAMERA 0x09
 #define CAN_ID_STOP 0x9    //停止的命令的优先级很高
 #define CAN_ID_BINIT 0x8
 #define CAN_ID_RESET 0x7
